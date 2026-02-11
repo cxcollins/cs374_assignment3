@@ -1,20 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 int option_1_logic() {
+    char current_dir[1024];
+    DIR *currDir;
+    struct dirent *entry;
+    struct stat dirStat;
+    int biggestFileSize = 0;
+    
+    currDir = opendir(".");
 
-    return 0;
+    while((entry = readdir(currDir)) != NULL) {
+        if (stat(entry->d_name, &dirStat) == 0) {
+            if (dirStat.st_size > biggestFileSize) {
+                biggestFileSize = dirStat.st_size;
+            }
+        }
+    }
+
+    return biggestFileSize;
 }
 
 int option_2_logic() {
+    char current_dir[1024];
+    DIR *currDir;
+    struct dirent *entry;
+    struct stat dirStat;
+    int smallestFileSize = -1;
+    int firstFile = 1;
+    
+    currDir = opendir(".");
 
-    return 0;
+    while((entry = readdir(currDir)) != NULL) {
+        if (stat(entry->d_name, &dirStat) == 0) {
+            if (firstFile || dirStat.st_size < smallestFileSize) {
+                smallestFileSize = dirStat.st_size;
+                firstFile = 0;
+            }
+        }
+    }
+
+    return smallestFileSize;
 }
 
 int option_3_logic() {
 
-    return 0;
 }
 
 int main(int argc, char **argv) {
@@ -37,9 +70,9 @@ int main(int argc, char **argv) {
                 scanf("%d", &response_2);
 
                 if (response_2 == 1) {
-                    option_1_logic();
+                    printf("%d\n", option_1_logic());
                 } else if (response_2 == 2) {
-                    option_2_logic();
+                    printf("%d\n", option_2_logic());
                 } else if (response_2 == 3) {
                     option_3_logic();
                 }
