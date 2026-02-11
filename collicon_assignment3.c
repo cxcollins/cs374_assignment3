@@ -4,12 +4,17 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-int option_1_logic() {
+void process_file() {
+    
+}
+
+char * option_1_logic() {
     char current_dir[1024];
     DIR *currDir;
     struct dirent *entry;
     struct stat dirStat;
     int biggestFileSize = 0;
+    
     
     currDir = opendir(".");
 
@@ -46,7 +51,23 @@ int option_2_logic() {
     return smallestFileSize;
 }
 
-int option_3_logic() {
+char *option_3_logic() {
+    char fileName[1024];
+    printf("Enter the name of the file: ");
+    scanf("%s", fileName);
+
+    char current_dir[1024];
+    DIR *currDir;
+    struct dirent *entry;
+    struct stat dirStat;
+    
+    currDir = opendir(".");
+
+    while((entry = readdir(currDir)) != NULL) {
+        if (strcmp(entry->d_name, fileName) == 0) {
+            return entry->d_name;
+        }
+    }
 
 }
 
@@ -74,7 +95,7 @@ int main(int argc, char **argv) {
                 } else if (response_2 == 2) {
                     printf("%d\n", option_2_logic());
                 } else if (response_2 == 3) {
-                    option_3_logic();
+                    printf("%s\n", option_3_logic());
                 }
                 else {printf("Invalid response. Please try again.\n");}
             } while (response_2 < 1 || response_2 > 3);
